@@ -242,6 +242,12 @@ list(APPEND SOURCE_FILES ${S_FILES})
 list(APPEND SOURCE_FILES ${C_FILES})
 list(APPEND SOURCE_FILES ${CC_FILES})
 
+# Project specific include directories
+list(APPEND INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/source/third_party/")
+list(APPEND INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/source/third_party/ruy")
+list(APPEND INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/source/third_party/flatbuffers/include")
+list(APPEND INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/source/third_party/gemmlowp/")
+
 if("${SOURCE_FILES}" STREQUAL "")
     message(FATAL_ERROR "${BoldRed}No user application to build, please add a main.cpp at: ${PROJECT_SOURCE_DIR}/${CODAL_APP_SOURCE_DIR}${ColourReset}")
 endif()
