@@ -44,8 +44,8 @@ int main(void) {
   input_image.free();
   logits.free();
 
-//   printf("pred label: %d\r\n", max_index);
-  uBit.display.print("pred label: %d\r\n", max_index);
+  uBit.display.print(max_index);
+  uBit.sleep(1000);
 
   return 0;
 }
