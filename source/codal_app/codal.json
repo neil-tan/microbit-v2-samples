@@ -1,0 +1,17 @@
+{
+    "target": {
+        "name": "codal-microbit-v2",
+        "url": "https://github.com/yumium/codal-microbit-v2",
+        "branch": "v0.2.24",
+        "type": "git",
+        "test_ignore": true
+    } ,
+    "config":{
+        "DEVICE_STACK_SIZE": 8192,
+        "MICROBIT_BLE_ENABLED" : 0,
+        "MICROBIT_BLE_PAIRING_MODE": 1,
+        "MICROBIT_BLE_SECURITY_MODE": 2
+    },
+    "application": "../../src/codal_app",
+    "output_folder": "../../src/build"
+}
