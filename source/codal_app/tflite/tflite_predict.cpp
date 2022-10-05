@@ -38,7 +38,7 @@ void setup() {
 
   // Map the model into a usable data structure. This doesn't involve any
   // copying or parsing, it's a very lightweight operation.
-  model = tflite::GetModel(g_model);
+  model = tflite::GetModel(tf_model_tflite);
   if (model->version() != TFLITE_SCHEMA_VERSION) {
     TF_LITE_REPORT_ERROR(error_reporter,
                          "Model provided is schema version %d not equal "
@@ -71,7 +71,7 @@ void setup() {
 // The name of this function is important for Arduino compatibility.
 int8_t* predict(int8_t in[]) {
   // Place the input data in the model's input tensor
-  for (int i = 0; i < 70; i++) {
+  for (int i = 0; i < 3400; i++) {
     input->data.f[i] = in[i];
   }
 
