@@ -30,7 +30,7 @@ void setup();
 // Runs one iteration of data gathering and inference. This should be called
 // repeatedly from the application code. The name needs to be loop() for Arduino
 // compatibility.
-int8_t* predict(int8_t x[]);
+float* predict(const float x[]);
 
 #ifdef __cplusplus
 }

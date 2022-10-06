@@ -69,9 +69,9 @@ void setup() {
 }
 
 // The name of this function is important for Arduino compatibility.
-int8_t* predict(int8_t in[]) {
+float* predict(const float in[]) {
   // Place the input data in the model's input tensor
-  for (int i = 0; i < 3400; i++) {
+  for (int i = 0; i < 3200; i++) {
     input->data.f[i] = in[i];
   }
 
@@ -88,5 +88,5 @@ int8_t* predict(int8_t in[]) {
   }
 
   // Return the match probability from model's output tensor
-  return output->data.int8;
+  return output->data.f;
 }

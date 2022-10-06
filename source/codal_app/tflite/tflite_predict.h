@@ -35,4 +35,4 @@ limitations under the License.
 #include "tensorflow/lite/micro/micro_interpreter.h"
 
 extern "C" void setup();
-extern "C" int8_t* predict(int8_t x[]);
+extern "C" float* predict(const float x[]);

@@ -30,10 +30,12 @@
 #include "tflite/model.h"
 #include "tflite/tflite_predict.h"
 #include "tflite/main_functions.h"
+#include "input_data.h"
 
 
 extern "C" void mp_main(void);
 extern "C" void m_printf(...);
+extern const float arr_input_data[3200];
 
 MicroBit uBit;
 
@@ -47,20 +49,24 @@ int main() {
 
     uBit.display.setBrightness(255);
 
-    // By default the speaker is enabled but no pin is selected.  The audio system will
-    // select the correct pin when any audio related code is first executed.
-    uBit.audio.setSpeakerEnabled(true);
-    uBit.audio.setPinEnabled(false);
 
     setup();
 
-    int8_t input[3400];
-    int8_t* output = predict(input);
+    uBit.display.print("x");
 
-    for(int i=0; i<35; i++) {
-        uBit.display.print(output[i]);
-        uBit.sleep(1000);
+    float* output = predict(arr_input_data);
+
+    float max_value = -100.0;
+    int8_t max_index = -1;
+    for(int i = 0; i<8; i++){
+        if(output[i] > max_value){
+            max_value = output[i];
+            max_index = i;
+        }
     }
+        
+    uBit.display.print(max_index);
+    uBit.sleep(1000);
 
     return 0;
 }
