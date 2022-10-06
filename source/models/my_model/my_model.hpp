@@ -5,33 +5,43 @@
 
 using namespace uTensor;
 
-class My_model : public ModelInterface<1, 1> 
+class MyModel : public ModelInterface<1, 1> 
 {
  public:
   enum input_names : uint8_t { input_0 };
   enum output_names : uint8_t { output_0 };
-  My_model();
+  MyModel();
  protected:
   virtual void compute();
  private:
   // Operators
-  TflmSymQuantOps::FullyConnectedOperator<int8_t> op_FullyConnectedOperator_000;
+  TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t> op_DepthwiseSeparableConvOperator_000;
 
-  TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t> op_DepthwiseSeparableConvOperator_001;
+  ReferenceOperators::ReshapeOperator<int8_t> op_ReshapeOperator_001;
 
-  TflmSymQuantOps::QuantizeOperator<int8_t, float> op_QuantizeOperator_002;
+  TflmSymQuantOps::DequantizeOperator<float, int8_t> op_DequantizeOperator_002;
 
-  TflmSymQuantOps::FullyConnectedOperator<int8_t> op_FullyConnectedOperator_003;
+  ReferenceOperators::AddOperator<int8_t> op_AddOperator_003;
 
   ReferenceOperators::ReshapeOperator<int8_t> op_ReshapeOperator_004;
 
-  ReferenceOperators::MaxPoolOperator<int8_t> op_MaxPoolOperator_005;
+  ReferenceOperators::MulOperator<int8_t> op_MulOperator_005;
 
-  TflmSymQuantOps::DequantizeOperator<float, int8_t> op_DequantizeOperator_006;
+  ReferenceOperators::Conv2dOperator<int8_t> op_Conv2dOperator_006;
+
+  TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t> op_DepthwiseSeparableConvOperator_007;
+
+  TflmSymQuantOps::FullyConnectedOperator<int8_t> op_FullyConnectedOperator_008;
+
+  ReferenceOperators::Conv2dOperator<int8_t> op_Conv2dOperator_009;
+
+  TflmSymQuantOps::QuantizeOperator<int8_t, float> op_QuantizeOperator_010;
+
+  ReferenceOperators::ReLUOperator<int8_t> op_ReLUOperator_011;
 
   // memory allocators
-  localCircularArenaAllocator<4440, uint16_t> ram_allocator;
-  localCircularArenaAllocator<960, uint16_t> metadata_allocator;
+  localCircularArenaAllocator<10656, uint16_t> ram_allocator;
+  localCircularArenaAllocator<2112, uint16_t> metadata_allocator;
 };
 
 #endif // __MY_MODEL_INTERFACE_H
