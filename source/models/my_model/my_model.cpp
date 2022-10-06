@@ -5,18 +5,17 @@
 
 
 MyModel::MyModel () :
-op_DepthwiseSeparableConvOperator_000({ 3, 3 }, VALID, 1, { 1, 1 }, TFLM::TfLiteFusedActivation::kTfLiteActRelu)
-, op_ReshapeOperator_001({ 1, 140 })
+op_Conv2dOperator_000({ 1, 2, 2, 1 }, VALID)
+, op_MulOperator_001()
 , op_DequantizeOperator_002()
-, op_AddOperator_003()
-, op_ReshapeOperator_004({ 1, 640, 5, 1 })
-, op_MulOperator_005()
+, op_ReshapeOperator_003({ 1, 224 })
+, op_QuantizeOperator_004()
+, op_FullyConnectedOperator_005(TFLM::TfLiteFusedActivation::kTfLiteActNone)
 , op_Conv2dOperator_006({ 1, 2, 1, 1 }, VALID)
 , op_DepthwiseSeparableConvOperator_007({ 2, 2 }, VALID, 1, { 1, 1 }, TFLM::TfLiteFusedActivation::kTfLiteActRelu)
-, op_FullyConnectedOperator_008(TFLM::TfLiteFusedActivation::kTfLiteActNone)
-, op_Conv2dOperator_009({ 1, 2, 2, 1 }, VALID)
-, op_QuantizeOperator_010()
-, op_ReLUOperator_011()
+, op_ReLUOperator_008()
+, op_AddOperator_009()
+, op_ReshapeOperator_010({ 1, 640, 5, 1 })
 {
   Context::get_default_context()->set_ram_data_allocator(&ram_allocator);
   Context::get_default_context()->set_metadata_allocator(&metadata_allocator);
@@ -29,418 +28,418 @@ void MyModel::compute()
   Context::get_default_context()->set_ram_data_allocator(&ram_allocator);
   Context::get_default_context()->set_metadata_allocator(&metadata_allocator);
   // start rendering local snippets
-  Tensor t_input_4_int80 = new RamTensor({ 1, 3200, 1 }, i8);
-    int32_t t_input_4_int80_zp = 0;
-    float t_input_4_int80_scale = 0.007843018;
-    PerTensorQuantizationParams t_input_4_int80_quant_params(t_input_4_int80_zp, t_input_4_int80_scale);
-    t_input_4_int80->set_quantization_params(t_input_4_int80_quant_params);
+  Tensor t_input_1_int80 = new RamTensor({ 1, 3200, 1 }, i8);
+    int32_t t_input_1_int80_zp = 0;
+    float t_input_1_int80_scale = 0.007843018;
+    PerTensorQuantizationParams t_input_1_int80_quant_params(t_input_1_int80_zp, t_input_1_int80_scale);
+    t_input_1_int80->set_quantization_params(t_input_1_int80_quant_params);
 
 
-  op_QuantizeOperator_010
+  op_QuantizeOperator_004
     .set_inputs({
         { TflmSymQuantOps::QuantizeOperator<int8_t, float>::input, inputs[input_0].tensor() },
     })
     .set_outputs({
-        { TflmSymQuantOps::QuantizeOperator<int8_t, float>::output, t_input_4_int80}
+        { TflmSymQuantOps::QuantizeOperator<int8_t, float>::output, t_input_1_int80}
     })
     .eval();
 
-  Tensor t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0 = new RomTensor({ 1 }, i8, data_StatefulPartitionedCall_sequential_3_batch_normalization_3_batchnorm_mul_0);
-    int32_t t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0_zp = 0;
-    float t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0_scale = 0.20839165;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0_quant_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0_zp, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0_scale);
-    t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0->set_quantization_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0 = new RomTensor({ 1 }, i8, data_StatefulPartitionedCall_sequential_batch_normalization_batchnorm_mul_0);
+    int32_t t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0_zp = 0;
+    float t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0_scale = 0.22543025;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0_quant_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0_zp, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0_scale);
+    t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0->set_quantization_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0_quant_params);
 
 
-  Tensor t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10 = new RamTensor({ 1, 3200, 1 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10_zp = 0;
-    float t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10_scale = 0.20757127;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10_quant_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10_zp, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10_scale);
-    t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10->set_quantization_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10 = new RamTensor({ 1, 3200, 1 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10_zp = 0;
+    float t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10_scale = 0.2245428;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10_quant_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10_zp, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10_scale);
+    t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10->set_quantization_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10_quant_params);
 
 
-  op_MulOperator_005
+  op_MulOperator_001
     .set_inputs({
-        { ReferenceOperators::MulOperator<int8_t>::a, t_input_4_int80 },
-        { ReferenceOperators::MulOperator<int8_t>::b, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0 },
+        { ReferenceOperators::MulOperator<int8_t>::a, t_input_1_int80 },
+        { ReferenceOperators::MulOperator<int8_t>::b, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0 },
     })
     .set_outputs({
-        { ReferenceOperators::MulOperator<int8_t>::c, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10}
+        { ReferenceOperators::MulOperator<int8_t>::c, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul0.free();
+  t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul0.free();
 
-  t_input_4_int80.free();
+  t_input_1_int80.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0 = new RomTensor({ 1 }, i8, data_StatefulPartitionedCall_sequential_3_batch_normalization_3_batchnorm_sub_0);
-    int32_t t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0_zp = 0;
-    float t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0_scale = 0.00022238886;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0_quant_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0_zp, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0_scale);
-    t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0->set_quantization_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0_quant_params);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10 = new RamTensor({ 1, 3200, 1 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10_zp = 0;
-    float t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10_scale = 0.20757127;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10_quant_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10_zp, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10_scale);
-    t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10->set_quantization_params(t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0 = new RomTensor({ 1 }, i8, data_StatefulPartitionedCall_sequential_batch_normalization_batchnorm_sub_0);
+    int32_t t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0_zp = 0;
+    float t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0_scale = 0.00011688772;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0_quant_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0_zp, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0_scale);
+    t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0->set_quantization_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0_quant_params);
 
 
-  op_AddOperator_003
+  Tensor t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10 = new RamTensor({ 1, 3200, 1 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10_zp = 0;
+    float t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10_scale = 0.2245428;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10_quant_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10_zp, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10_scale);
+    t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10->set_quantization_params(t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10_quant_params);
+
+
+  op_AddOperator_009
     .set_inputs({
-        { ReferenceOperators::AddOperator<int8_t>::a, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10 },
-        { ReferenceOperators::AddOperator<int8_t>::b, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0 },
+        { ReferenceOperators::AddOperator<int8_t>::a, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10 },
+        { ReferenceOperators::AddOperator<int8_t>::b, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0 },
     })
     .set_outputs({
-        { ReferenceOperators::AddOperator<int8_t>::c, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10}
+        { ReferenceOperators::AddOperator<int8_t>::c, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormmul_10.free();
+  t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormsub0.free();
 
-  t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormsub0.free();
+  t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormmul_10.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3reshape_3Reshapeshape0 = new RomTensor({ 4 }, i32, data_StatefulPartitionedCall_sequential_3_reshape_3_Reshape_shape_0);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3reshape_3Reshape0 = new RamTensor({ 1, 640, 5, 1 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3reshape_3Reshape0_zp = 0;
-    float t_StatefulPartitionedCallsequential_3reshape_3Reshape0_scale = 0.20757127;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3reshape_3Reshape0_quant_params(t_StatefulPartitionedCallsequential_3reshape_3Reshape0_zp, t_StatefulPartitionedCallsequential_3reshape_3Reshape0_scale);
-    t_StatefulPartitionedCallsequential_3reshape_3Reshape0->set_quantization_params(t_StatefulPartitionedCallsequential_3reshape_3Reshape0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialreshapeReshapeshape0 = new RomTensor({ 4 }, i32, data_StatefulPartitionedCall_sequential_reshape_Reshape_shape_0);
 
 
-  op_ReshapeOperator_004
+  Tensor t_StatefulPartitionedCallsequentialreshapeReshape0 = new RamTensor({ 1, 640, 5, 1 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialreshapeReshape0_zp = 0;
+    float t_StatefulPartitionedCallsequentialreshapeReshape0_scale = 0.2245428;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialreshapeReshape0_quant_params(t_StatefulPartitionedCallsequentialreshapeReshape0_zp, t_StatefulPartitionedCallsequentialreshapeReshape0_scale);
+    t_StatefulPartitionedCallsequentialreshapeReshape0->set_quantization_params(t_StatefulPartitionedCallsequentialreshapeReshape0_quant_params);
+
+
+  op_ReshapeOperator_010
     .set_inputs({
-        { ReferenceOperators::ReshapeOperator<int8_t>::input, t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10 },
+        { ReferenceOperators::ReshapeOperator<int8_t>::input, t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10 },
     })
     .set_outputs({
-        { ReferenceOperators::ReshapeOperator<int8_t>::output, t_StatefulPartitionedCallsequential_3reshape_3Reshape0}
+        { ReferenceOperators::ReshapeOperator<int8_t>::output, t_StatefulPartitionedCallsequentialreshapeReshape0}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3reshape_3Reshapeshape0.free();
+  t_StatefulPartitionedCallsequentialreshapeReshapeshape0.free();
 
-  t_StatefulPartitionedCallsequential_3batch_normalization_3batchnormadd_10.free();
+  t_StatefulPartitionedCallsequentialbatch_normalizationbatchnormadd_10.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0 = new RomTensor({ 12, 3, 5, 1 }, i8, data_StatefulPartitionedCall_sequential_3_conv2d_6_Conv2D_ReadVariableOp_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0_scale[12] = { 0.001743974, 0.0045942934, 0.0073892926, 0.001453251, 0.0053062784, 0.0029492103, 0.0052869623, 0.005068364, 0.004114782, 0.0058547063, 0.004879228, 0.0060252864 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0_scale);
-    t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0_quant_params);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_3_conv2d_6_Conv2D_bias_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0_scale[12] = { 0.00036199891, 0.0009536433, 0.0015338048, 0.00030165314, 0.001101431, 0.0006121713, 0.0010974215, 0.0010520468, 0.0008541105, 0.0012152689, 0.0010127875, 0.0012506763 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0_quant_params(arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0_zp, arr_t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0_scale);
-    t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0->set_quantization_params(t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0 = new RomTensor({ 12, 3, 5, 1 }, i8, data_StatefulPartitionedCall_sequential_conv2d_Conv2D_ReadVariableOp_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0_scale[12] = { 0.0065238345, 0.00131465, 0.004780463, 0.0052345414, 0.0075631733, 0.0058120387, 0.005304151, 0.0013566045, 0.0067588463, 0.005157659, 0.0073737223, 0.007311276 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0_scale);
+    t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0_quant_params);
 
 
-  Tensor t_StatefulPartitionedCallsequential_3conv2d_6Relu0 = new RamTensor({ 1, 319, 1, 12 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3conv2d_6Relu0_zp = -128;
-    float t_StatefulPartitionedCallsequential_3conv2d_6Relu0_scale = 0.37212962;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3conv2d_6Relu0_quant_params(t_StatefulPartitionedCallsequential_3conv2d_6Relu0_zp, t_StatefulPartitionedCallsequential_3conv2d_6Relu0_scale);
-    t_StatefulPartitionedCallsequential_3conv2d_6Relu0->set_quantization_params(t_StatefulPartitionedCallsequential_3conv2d_6Relu0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialconv2dConv2D_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_conv2d_Conv2D_bias_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialconv2dConv2D_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialconv2dConv2D_bias0_scale[12] = { 0.0014648801, 0.0002951952, 0.0010734185, 0.0011753786, 0.0016982561, 0.0013050514, 0.001191009, 0.00030461577, 0.0015176502, 0.0011581151, 0.0016557162, 0.0016416943 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialconv2dConv2D_bias0_quant_params(arr_t_StatefulPartitionedCallsequentialconv2dConv2D_bias0_zp, arr_t_StatefulPartitionedCallsequentialconv2dConv2D_bias0_scale);
+    t_StatefulPartitionedCallsequentialconv2dConv2D_bias0->set_quantization_params(t_StatefulPartitionedCallsequentialconv2dConv2D_bias0_quant_params);
+
+
+  Tensor t_StatefulPartitionedCallsequentialconv2dRelu0 = new RamTensor({ 1, 319, 1, 12 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialconv2dRelu0_zp = -128;
+    float t_StatefulPartitionedCallsequentialconv2dRelu0_scale = 0.56027025;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialconv2dRelu0_quant_params(t_StatefulPartitionedCallsequentialconv2dRelu0_zp, t_StatefulPartitionedCallsequentialconv2dRelu0_scale);
+    t_StatefulPartitionedCallsequentialconv2dRelu0->set_quantization_params(t_StatefulPartitionedCallsequentialconv2dRelu0_quant_params);
 
 
   op_Conv2dOperator_006
     .set_inputs({
-        { ReferenceOperators::Conv2dOperator<int8_t>::in, t_StatefulPartitionedCallsequential_3reshape_3Reshape0 },
-        { ReferenceOperators::Conv2dOperator<int8_t>::filter, t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0 },
+        { ReferenceOperators::Conv2dOperator<int8_t>::in, t_StatefulPartitionedCallsequentialreshapeReshape0 },
+        { ReferenceOperators::Conv2dOperator<int8_t>::filter, t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0 },
     })
     .set_outputs({
-        { ReferenceOperators::Conv2dOperator<int8_t>::out, t_StatefulPartitionedCallsequential_3conv2d_6Relu0}
+        { ReferenceOperators::Conv2dOperator<int8_t>::out, t_StatefulPartitionedCallsequentialconv2dRelu0}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3reshape_3Reshape0.free();
+  t_StatefulPartitionedCallsequentialreshapeReshape0.free();
 
-  t_StatefulPartitionedCallsequential_3conv2d_6Conv2D_bias0.free();
+  t_StatefulPartitionedCallsequentialconv2dConv2D_bias0.free();
 
-  t_StatefulPartitionedCallsequential_3conv2d_6Conv2DReadVariableOp0.free();
+  t_StatefulPartitionedCallsequentialconv2dConv2DReadVariableOp0.free();
 
   Tensor t_4_CONV_2DReLU0 = new RamTensor({ 1, 319, 1, 12 }, i8);
     int32_t t_4_CONV_2DReLU0_zp = -128;
-    float t_4_CONV_2DReLU0_scale = 0.37212962;
+    float t_4_CONV_2DReLU0_scale = 0.56027025;
     PerTensorQuantizationParams t_4_CONV_2DReLU0_quant_params(t_4_CONV_2DReLU0_zp, t_4_CONV_2DReLU0_scale);
     t_4_CONV_2DReLU0->set_quantization_params(t_4_CONV_2DReLU0_quant_params);
 
 
-  op_ReLUOperator_011
+  op_ReLUOperator_008
     .set_inputs({
-        { ReferenceOperators::ReLUOperator<int8_t>::in, t_StatefulPartitionedCallsequential_3conv2d_6Relu0 },
+        { ReferenceOperators::ReLUOperator<int8_t>::in, t_StatefulPartitionedCallsequentialconv2dRelu0 },
     })
     .set_outputs({
         { ReferenceOperators::ReLUOperator<int8_t>::out, t_4_CONV_2DReLU0}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3conv2d_6Relu0.free();
+  t_StatefulPartitionedCallsequentialconv2dRelu0.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0 = new RomTensor({ 1, 5, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_12_depthwise_ReadVariableOp_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0_scale[12] = { 0.0020697347, 0.006893001, 0.008047139, 0.002137242, 0.004419011, 0.0019223698, 0.004998156, 0.004569851, 0.005913642, 0.0054973485, 0.005977781, 0.0061532427 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0_quant_params);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_12_depthwise_bias_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0_scale[12] = { 0.0007702096, 0.0025650898, 0.0029945788, 0.000795331, 0.0016444449, 0.00071537076, 0.0018599619, 0.0017005769, 0.0022006412, 0.0020457262, 0.0022245094, 0.002289804 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0 = new RomTensor({ 1, 5, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_depthwise_conv2d_depthwise_ReadVariableOp_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0_scale[12] = { 0.0045597074, 0.0019803138, 0.0054264995, 0.0046785264, 0.0064064246, 0.0068512713, 0.0048742145, 0.0026279674, 0.00819059, 0.005196578, 0.00662123, 0.004777039 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0_quant_params);
 
 
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0 = new RamTensor({ 1, 158, 1, 12 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0_zp = -128;
-    float t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0_scale = 0.71115017;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0_quant_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0_zp, t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_depthwise_conv2d_depthwise_bias_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0_scale[12] = { 0.0025546683, 0.0011095109, 0.0030403063, 0.0026212393, 0.003589329, 0.0038385636, 0.0027308774, 0.001472372, 0.004588944, 0.002911488, 0.003709678, 0.0026764327 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0_quant_params);
+
+
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0 = new RamTensor({ 1, 158, 1, 12 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0_zp = -128;
+    float t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0_scale = 0.69383377;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0_quant_params(t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0_zp, t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0_quant_params);
 
 
   op_DepthwiseSeparableConvOperator_007
     .set_inputs({
         { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::in, t_4_CONV_2DReLU0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0 },
     })
     .set_outputs({
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0}
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0}
     })
     .eval();
-
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwiseReadVariableOp0.free();
 
   t_4_CONV_2DReLU0.free();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_12depthwise_bias0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwise_bias0.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0 = new RomTensor({ 1, 5, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_13_depthwise_ReadVariableOp_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0_scale[12] = { 0.0024450691, 0.0054554464, 0.009447818, 0.0014782358, 0.00668685, 0.0036048268, 0.0052524703, 0.0042076325, 0.0047047087, 0.005819335, 0.004655469, 0.007813552 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0_quant_params);
+  t_StatefulPartitionedCallsequentialdepthwise_conv2ddepthwiseReadVariableOp0.free();
 
-
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_13_depthwise_bias_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0_scale[12] = { 0.0017388114, 0.0038796416, 0.006718817, 0.0010512477, 0.0047553545, 0.0025635732, 0.003735295, 0.0029922586, 0.0033457545, 0.0041384213, 0.0033107377, 0.005556609 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0 = new RomTensor({ 1, 5, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_depthwise_conv2d_1_depthwise_ReadVariableOp_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0_scale[12] = { 0.006198582, 0.00168789, 0.004026758, 0.006581259, 0.005131163, 0.006547345, 0.004424622, 0.0010811696, 0.0055824593, 0.005884131, 0.006187578, 0.007255615 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0_quant_params);
 
 
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0 = new RamTensor({ 1, 77, 1, 12 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0_zp = -128;
-    float t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0_scale = 1.4649659;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0_quant_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0_zp, t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_depthwise_conv2d_1_depthwise_bias_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0_scale[12] = { 0.0043007853, 0.0011711151, 0.0027939007, 0.0045662997, 0.0035601743, 0.004542769, 0.0030699521, 0.000750152, 0.0038732986, 0.004082609, 0.0042931507, 0.005034191 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0_quant_params);
 
 
-  op_DepthwiseSeparableConvOperator_007
-    .set_inputs({
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::in, t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0 },
-    })
-    .set_outputs({
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0}
-    })
-    .eval();
-
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwiseReadVariableOp0.free();
-
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_12Relu0.free();
-
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_13depthwise_bias0.free();
-
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0 = new RomTensor({ 1, 3, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_14_depthwise_ReadVariableOp_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0_scale[12] = { 0.003022795, 0.0052409945, 0.0037604654, 0.002351679, 0.0072978456, 0.015310915, 0.008738984, 0.0048700473, 0.004797705, 0.004312477, 0.005301103, 0.005618636 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0_quant_params);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_14_depthwise_bias_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0_scale[12] = { 0.0044282917, 0.0076778783, 0.0055089537, 0.0034451296, 0.010691095, 0.02242997, 0.012802314, 0.0071344534, 0.0070284745, 0.006317632, 0.0077659353, 0.008231111 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0_quant_params);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0 = new RamTensor({ 1, 38, 1, 12 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0_zp = -128;
-    float t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0_scale = 2.1569102;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0_quant_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0_zp, t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0 = new RamTensor({ 1, 77, 1, 12 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0_zp = -128;
+    float t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0_scale = 1.199083;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0_quant_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0_zp, t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0_quant_params);
 
 
   op_DepthwiseSeparableConvOperator_007
     .set_inputs({
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::in, t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::in, t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0 },
     })
     .set_outputs({
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0}
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwise_bias0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2dRelu0.free();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_14depthwiseReadVariableOp0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwise_bias0.free();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_13Relu0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_1depthwiseReadVariableOp0.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0 = new RomTensor({ 28, 3, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_3_conv2d_7_Conv2D_ReadVariableOp_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0_scale[28] = { 0.012602599, 0.0075279647, 0.011719019, 0.01178778, 0.011712457, 0.005514578, 0.007684955, 0.011328405, 0.0050153015, 0.009028894, 0.008153263, 0.012630495, 0.010023797, 0.0065137427, 0.0075250245, 0.009571913, 0.006488495, 0.0045496053, 0.008854222, 0.0044760345, 0.0068329936, 0.001722217, 0.00829305, 0.008589315, 0.005502803, 0.0016726606, 0.0057899635, 0.0065599247 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0_scale);
-    t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0_quant_params);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0 = new RomTensor({ 28 }, i32, data_StatefulPartitionedCall_sequential_3_conv2d_7_Conv2D_bias_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0_scale[28] = { 0.027182674, 0.016237143, 0.025276871, 0.025425183, 0.025262717, 0.01189445, 0.016575757, 0.024434352, 0.010817555, 0.019474514, 0.017585855, 0.027242843, 0.02162043, 0.014049558, 0.016230801, 0.020645756, 0.013995101, 0.00981309, 0.01909776, 0.009654405, 0.014738154, 0.0037146674, 0.017887365, 0.01852638, 0.0118690515, 0.0036077786, 0.012488431, 0.0141491685 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0_quant_params(arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0_zp, arr_t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0_scale);
-    t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0->set_quantization_params(t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0 = new RomTensor({ 1, 3, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_depthwise_conv2d_2_depthwise_ReadVariableOp_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0_scale[12] = { 0.0034629237, 0.0010954172, 0.004739443, 0.0144449435, 0.0057250685, 0.0045180465, 0.0057515614, 0.0024569521, 0.0076519405, 0.0052062706, 0.0069831535, 0.009776312 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0_quant_params);
 
 
-  Tensor t_StatefulPartitionedCallsequential_3conv2d_7Relu0 = new RamTensor({ 1, 18, 1, 28 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3conv2d_7Relu0_zp = -128;
-    float t_StatefulPartitionedCallsequential_3conv2d_7Relu0_scale = 1.2364186;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3conv2d_7Relu0_quant_params(t_StatefulPartitionedCallsequential_3conv2d_7Relu0_zp, t_StatefulPartitionedCallsequential_3conv2d_7Relu0_scale);
-    t_StatefulPartitionedCallsequential_3conv2d_7Relu0->set_quantization_params(t_StatefulPartitionedCallsequential_3conv2d_7Relu0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0 = new RomTensor({ 12 }, i32, data_StatefulPartitionedCall_sequential_depthwise_conv2d_2_depthwise_bias_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0_zp[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0_scale[12] = { 0.004152333, 0.0013134961, 0.0056829853, 0.017320685, 0.0068648322, 0.0054175127, 0.006896599, 0.0029460895, 0.009175312, 0.00624275, 0.008373381, 0.011722609 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0_quant_params);
 
 
-  op_Conv2dOperator_009
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0 = new RamTensor({ 1, 38, 1, 12 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0_zp = -128;
+    float t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0_scale = 1.3608651;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0_quant_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0_zp, t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0_quant_params);
+
+
+  op_DepthwiseSeparableConvOperator_007
     .set_inputs({
-        { ReferenceOperators::Conv2dOperator<int8_t>::in, t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0 },
-        { ReferenceOperators::Conv2dOperator<int8_t>::filter, t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::in, t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0 },
     })
     .set_outputs({
-        { ReferenceOperators::Conv2dOperator<int8_t>::out, t_StatefulPartitionedCallsequential_3conv2d_7Relu0}
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3conv2d_7Conv2D_bias0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwise_bias0.free();
 
-  t_StatefulPartitionedCallsequential_3conv2d_7Conv2DReadVariableOp0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_1Relu0.free();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_14Relu0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_2depthwiseReadVariableOp0.free();
+
+  Tensor t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0 = new RomTensor({ 28, 3, 1, 12 }, i8, data_StatefulPartitionedCall_sequential_conv2d_1_Conv2D_ReadVariableOp_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0_scale[28] = { 0.012779105, 0.0111437235, 0.010698048, 0.011770315, 0.009637021, 0.017298138, 0.025526598, 0.0074066888, 0.0017534409, 0.0021297687, 0.029196244, 0.010109907, 0.02365688, 0.013118089, 0.008022398, 0.008796855, 0.013162344, 0.008393121, 0.0057082064, 0.007670292, 0.01160231, 0.0038732118, 0.02367491, 0.0065528457, 0.008312682, 0.009234167, 0.008632068, 0.012491581 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0_scale);
+    t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0_quant_params);
+
+
+  Tensor t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0 = new RomTensor({ 28 }, i32, data_StatefulPartitionedCall_sequential_conv2d_1_Conv2D_bias_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0_scale[28] = { 0.017390639, 0.0151651045, 0.014558601, 0.016017811, 0.013114686, 0.023540432, 0.034738258, 0.010079504, 0.0023861965, 0.002898328, 0.03973215, 0.01375822, 0.032193825, 0.01785195, 0.010917401, 0.011971333, 0.017912174, 0.011421906, 0.007768099, 0.010438233, 0.01578918, 0.005270919, 0.03221836, 0.008917539, 0.011312438, 0.012566456, 0.01174708, 0.016999356 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0_quant_params(arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0_zp, arr_t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0_scale);
+    t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0->set_quantization_params(t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0_quant_params);
+
+
+  Tensor t_StatefulPartitionedCallsequentialconv2d_1Relu0 = new RamTensor({ 1, 18, 1, 28 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialconv2d_1Relu0_zp = -128;
+    float t_StatefulPartitionedCallsequentialconv2d_1Relu0_scale = 2.7080662;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialconv2d_1Relu0_quant_params(t_StatefulPartitionedCallsequentialconv2d_1Relu0_zp, t_StatefulPartitionedCallsequentialconv2d_1Relu0_scale);
+    t_StatefulPartitionedCallsequentialconv2d_1Relu0->set_quantization_params(t_StatefulPartitionedCallsequentialconv2d_1Relu0_quant_params);
+
+
+  op_Conv2dOperator_000
+    .set_inputs({
+        { ReferenceOperators::Conv2dOperator<int8_t>::in, t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0 },
+        { ReferenceOperators::Conv2dOperator<int8_t>::filter, t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0 },
+    })
+    .set_outputs({
+        { ReferenceOperators::Conv2dOperator<int8_t>::out, t_StatefulPartitionedCallsequentialconv2d_1Relu0}
+    })
+    .eval();
+
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_2Relu0.free();
+
+  t_StatefulPartitionedCallsequentialconv2d_1Conv2DReadVariableOp0.free();
+
+  t_StatefulPartitionedCallsequentialconv2d_1Conv2D_bias0.free();
 
   Tensor t_8_CONV_2DReLU0 = new RamTensor({ 1, 18, 1, 28 }, i8);
     int32_t t_8_CONV_2DReLU0_zp = -128;
-    float t_8_CONV_2DReLU0_scale = 1.2364186;
+    float t_8_CONV_2DReLU0_scale = 2.7080662;
     PerTensorQuantizationParams t_8_CONV_2DReLU0_quant_params(t_8_CONV_2DReLU0_zp, t_8_CONV_2DReLU0_scale);
     t_8_CONV_2DReLU0->set_quantization_params(t_8_CONV_2DReLU0_quant_params);
 
 
-  op_ReLUOperator_011
+  op_ReLUOperator_008
     .set_inputs({
-        { ReferenceOperators::ReLUOperator<int8_t>::in, t_StatefulPartitionedCallsequential_3conv2d_7Relu0 },
+        { ReferenceOperators::ReLUOperator<int8_t>::in, t_StatefulPartitionedCallsequentialconv2d_1Relu0 },
     })
     .set_outputs({
         { ReferenceOperators::ReLUOperator<int8_t>::out, t_8_CONV_2DReLU0}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3conv2d_7Relu0.free();
+  t_StatefulPartitionedCallsequentialconv2d_1Relu0.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0 = new RomTensor({ 1, 5, 1, 28 }, i8, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_15_depthwise_ReadVariableOp_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0_scale[28] = { 0.006331516, 0.0035315752, 0.010223372, 0.0058983522, 0.016795132, 0.0010780457, 0.0069746794, 0.005955185, 0.00564577, 0.007982512, 0.001732515, 0.006913827, 0.004403718, 0.0042042537, 0.0018813126, 0.0068912036, 0.003584954, 0.006826815, 0.012918894, 0.010342325, 0.0033311024, 0.001518666, 0.009082831, 0.0050083124, 0.012075967, 0.0016843253, 0.0026816837, 0.003620104 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0_quant_params);
-
-
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0 = new RomTensor({ 28 }, i32, data_StatefulPartitionedCall_sequential_3_depthwise_conv2d_15_depthwise_bias_0);
-    int32_t arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    float arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0_scale[28] = { 0.007828404, 0.0043665054, 0.012640367, 0.0072928322, 0.020765815, 0.0013329157, 0.008623623, 0.0073631015, 0.006980535, 0.009869726, 0.0021421139, 0.0085483845, 0.0054448387, 0.0051982175, 0.00232609, 0.008520412, 0.0044325036, 0.008440801, 0.015973162, 0.012787444, 0.004118637, 0.001877707, 0.011230182, 0.006192371, 0.0149309505, 0.002082531, 0.0033156837, 0.004475964 };
-    PerChannelQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0_zp, arr_t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0 = new RomTensor({ 1, 3, 1, 28 }, i8, data_StatefulPartitionedCall_sequential_depthwise_conv2d_3_depthwise_ReadVariableOp_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0_scale[28] = { 0.010669642, 0.004308214, 0.0045747757, 0.0028850841, 0.009144646, 0.007980568, 0.0034671715, 0.006091667, 0.0016813262, 0.0003585504, 0.008400575, 0.011369829, 0.011806231, 0.003315479, 0.012164322, 0.026634116, 0.0010421019, 0.0012727567, 0.0055011767, 0.0018170222, 0.015470625, 0.0046037473, 0.0039546695, 0.011373125, 0.005825307, 0.0015962406, 0.0013261517, 0.007941047 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0_quant_params);
 
 
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0 = new RamTensor({ 1, 5, 1, 28 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0_zp = -128;
-    float t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0_scale = 0.14386041;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0_quant_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0_zp, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0 = new RomTensor({ 28 }, i32, data_StatefulPartitionedCall_sequential_depthwise_conv2d_3_depthwise_bias_0);
+    int32_t arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0_zp[28] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    float arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0_scale[28] = { 0.028894097, 0.011666928, 0.012388796, 0.007812999, 0.024764307, 0.021611908, 0.00938933, 0.016496638, 0.0045531425, 0.00097097823, 0.022749314, 0.03079025, 0.031972054, 0.008978536, 0.03294179, 0.07212695, 0.0028220809, 0.0034467096, 0.01489755, 0.0049206163, 0.041895475, 0.012467252, 0.010709506, 0.030799177, 0.015775317, 0.0043227253, 0.0035913065, 0.02150488 };
+    PerChannelQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0_quant_params(arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0_zp, arr_t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0_quant_params);
 
 
-  op_DepthwiseSeparableConvOperator_000
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0 = new RamTensor({ 1, 8, 1, 28 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0_zp = -128;
+    float t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0_scale = 0.24418423;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0_quant_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0_zp, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0_quant_params);
+
+
+  op_DepthwiseSeparableConvOperator_007
     .set_inputs({
         { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::in, t_8_CONV_2DReLU0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0 },
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::filter, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0 },
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::bias, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0 },
     })
     .set_outputs({
-        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0}
+        { TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t>::out, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwiseReadVariableOp0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwise_bias0.free();
+
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_3depthwiseReadVariableOp0.free();
 
   t_8_CONV_2DReLU0.free();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_15depthwise_bias0.free();
-
-  Tensor t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00 = new RamTensor({ 1, 140 }, i8);
-    int32_t t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00_zp = -128;
-    float t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00_scale = 0.14386041;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00_quant_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00_zp, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00_scale);
-    t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00->set_quantization_params(t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00 = new RamTensor({ 1, 224 }, i8);
+    int32_t t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00_zp = -128;
+    float t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00_scale = 0.24418423;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00_quant_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00_zp, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00_scale);
+    t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00->set_quantization_params(t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00_quant_params);
 
 
-  op_ReshapeOperator_001
+  op_ReshapeOperator_003
     .set_inputs({
-        { ReferenceOperators::ReshapeOperator<int8_t>::input, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0 },
+        { ReferenceOperators::ReshapeOperator<int8_t>::input, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0 },
     })
     .set_outputs({
-        { ReferenceOperators::ReshapeOperator<int8_t>::output, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00}
+        { ReferenceOperators::ReshapeOperator<int8_t>::output, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu0.free();
 
-  Tensor t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0 = new RomTensor({ 140, 8 }, i8, data_StatefulPartitionedCall_sequential_3_dense_3_MatMul_ReadVariableOp_transpose_0);
-    int32_t t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0_zp = 0;
-    float t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0_scale = 0.024005039;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0_quant_params(t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0_zp, t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0_scale);
-    t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0->set_quantization_params(t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0 = new RomTensor({ 224, 8 }, i8, data_StatefulPartitionedCall_sequential_dense_MatMul_ReadVariableOp_transpose_0);
+    int32_t t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0_zp = 0;
+    float t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0_scale = 0.032771774;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0_quant_params(t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0_zp, t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0_scale);
+    t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0->set_quantization_params(t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0_quant_params);
 
 
-  Tensor t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0 = new RomTensor({ 8 }, i32, data_StatefulPartitionedCall_sequential_3_dense_3_MatMul_bias_0);
-    int32_t t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0_zp = 0;
-    float t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0_scale = 0.0034533748;
-    PerTensorQuantizationParams t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0_quant_params(t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0_zp, t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0_scale);
-    t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0->set_quantization_params(t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0_quant_params);
+  Tensor t_StatefulPartitionedCallsequentialdenseMatMul_bias0 = new RomTensor({ 8 }, i32, data_StatefulPartitionedCall_sequential_dense_MatMul_bias_0);
+    int32_t t_StatefulPartitionedCallsequentialdenseMatMul_bias0_zp = 0;
+    float t_StatefulPartitionedCallsequentialdenseMatMul_bias0_scale = 0.00800235;
+    PerTensorQuantizationParams t_StatefulPartitionedCallsequentialdenseMatMul_bias0_quant_params(t_StatefulPartitionedCallsequentialdenseMatMul_bias0_zp, t_StatefulPartitionedCallsequentialdenseMatMul_bias0_scale);
+    t_StatefulPartitionedCallsequentialdenseMatMul_bias0->set_quantization_params(t_StatefulPartitionedCallsequentialdenseMatMul_bias0_quant_params);
 
 
   Tensor t_Identity_int80 = new RamTensor({ 1, 8 }, i8);
-    int32_t t_Identity_int80_zp = 65;
-    float t_Identity_int80_scale = 0.49466684;
+    int32_t t_Identity_int80_zp = 90;
+    float t_Identity_int80_scale = 0.81071335;
     PerTensorQuantizationParams t_Identity_int80_quant_params(t_Identity_int80_zp, t_Identity_int80_scale);
     t_Identity_int80->set_quantization_params(t_Identity_int80_quant_params);
 
 
-  op_FullyConnectedOperator_008
+  op_FullyConnectedOperator_005
     .set_inputs({
-        { TflmSymQuantOps::FullyConnectedOperator<int8_t>::input, t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00 },
-        { TflmSymQuantOps::FullyConnectedOperator<int8_t>::filter, t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0 },
-        { TflmSymQuantOps::FullyConnectedOperator<int8_t>::bias, t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0 },
+        { TflmSymQuantOps::FullyConnectedOperator<int8_t>::input, t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00 },
+        { TflmSymQuantOps::FullyConnectedOperator<int8_t>::filter, t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0 },
+        { TflmSymQuantOps::FullyConnectedOperator<int8_t>::bias, t_StatefulPartitionedCallsequentialdenseMatMul_bias0 },
     })
     .set_outputs({
         { TflmSymQuantOps::FullyConnectedOperator<int8_t>::output, t_Identity_int80}
     })
     .eval();
 
-  t_StatefulPartitionedCallsequential_3dense_3MatMulReadVariableOptranspose0.free();
+  t_StatefulPartitionedCallsequentialdepthwise_conv2d_3Relu_0_Reshape00.free();
 
-  t_StatefulPartitionedCallsequential_3depthwise_conv2d_15Relu_0_Reshape00.free();
+  t_StatefulPartitionedCallsequentialdenseMatMulReadVariableOptranspose0.free();
 
-  t_StatefulPartitionedCallsequential_3dense_3MatMul_bias0.free();
+  t_StatefulPartitionedCallsequentialdenseMatMul_bias0.free();
 
   op_DequantizeOperator_002
     .set_inputs({

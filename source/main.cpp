@@ -33,7 +33,7 @@ int main(void) {
 //   printf("Simple MNIST end-to-end uTensor cli example (device)\n");
 
   // create the input/output tensor
-  Tensor input_image = new RomTensor({3200, 1}, flt, arr_input_data);
+  Tensor input_image = new RomTensor({1, 3200, 1}, flt, arr_input_data);
   Tensor logits = new RamTensor({1, 8}, flt);
 
   uBit.display.print("x");

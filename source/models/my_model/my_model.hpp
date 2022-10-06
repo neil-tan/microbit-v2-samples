@@ -15,29 +15,27 @@ class MyModel : public ModelInterface<1, 1>
   virtual void compute();
  private:
   // Operators
-  TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t> op_DepthwiseSeparableConvOperator_000;
+  ReferenceOperators::Conv2dOperator<int8_t> op_Conv2dOperator_000;
 
-  ReferenceOperators::ReshapeOperator<int8_t> op_ReshapeOperator_001;
+  ReferenceOperators::MulOperator<int8_t> op_MulOperator_001;
 
   TflmSymQuantOps::DequantizeOperator<float, int8_t> op_DequantizeOperator_002;
 
-  ReferenceOperators::AddOperator<int8_t> op_AddOperator_003;
+  ReferenceOperators::ReshapeOperator<int8_t> op_ReshapeOperator_003;
 
-  ReferenceOperators::ReshapeOperator<int8_t> op_ReshapeOperator_004;
+  TflmSymQuantOps::QuantizeOperator<int8_t, float> op_QuantizeOperator_004;
 
-  ReferenceOperators::MulOperator<int8_t> op_MulOperator_005;
+  TflmSymQuantOps::FullyConnectedOperator<int8_t> op_FullyConnectedOperator_005;
 
   ReferenceOperators::Conv2dOperator<int8_t> op_Conv2dOperator_006;
 
   TflmSymQuantOps::DepthwiseSeparableConvOperator<int8_t> op_DepthwiseSeparableConvOperator_007;
 
-  TflmSymQuantOps::FullyConnectedOperator<int8_t> op_FullyConnectedOperator_008;
+  ReferenceOperators::ReLUOperator<int8_t> op_ReLUOperator_008;
 
-  ReferenceOperators::Conv2dOperator<int8_t> op_Conv2dOperator_009;
+  ReferenceOperators::AddOperator<int8_t> op_AddOperator_009;
 
-  TflmSymQuantOps::QuantizeOperator<int8_t, float> op_QuantizeOperator_010;
-
-  ReferenceOperators::ReLUOperator<int8_t> op_ReLUOperator_011;
+  ReferenceOperators::ReshapeOperator<int8_t> op_ReshapeOperator_010;
 
   // memory allocators
   localCircularArenaAllocator<10656, uint16_t> ram_allocator;
