@@ -27,15 +27,15 @@ const char* GetString_ETHOSU();
 AllOpsResolver::AllOpsResolver() {
   // Please keep this list of Builtin Operators in alphabetical order.
   // AddAbs();
-  // AddAdd();
+  AddAdd();
   // AddArgMax();
   // AddArgMin();
   // AddAveragePool2D();
   // AddCeil();
   // AddConcatenation();
-  // AddConv2D();
+  AddConv2D();
   // AddCos();
-  // AddDepthwiseConv2D();
+  AddDepthwiseConv2D();
   // AddDequantize();
   // AddEqual();
   // AddFloor();
@@ -54,7 +54,7 @@ AllOpsResolver::AllOpsResolver() {
   // AddMaxPool2D();
   // AddMean();
   // AddMinimum();
-  // AddMul();
+  AddMul();
   // AddNeg();
   // AddNotEqual();
   // AddPack();
@@ -62,9 +62,9 @@ AllOpsResolver::AllOpsResolver() {
   // AddPadV2();
   // AddPrelu();
   // AddQuantize();
-  // AddRelu();
+  AddRelu();
   // AddRelu6();
-  // AddReshape();
+  AddReshape();
   // AddResizeNearestNeighbor();
   // AddRound();
   // AddRsqrt();
