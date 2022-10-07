@@ -1,8 +1,11 @@
 /* Copyright 2020 The TensorFlow Authors. All Rights Reserved.
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
+
     http://www.apache.org/licenses/LICENSE-2.0
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,19 +35,16 @@ limitations under the License.
 // tensorflow/lite/micro/mbed/debug_log.cc.
 
 #include "tensorflow/lite/micro/debug_log.h"
-#include "main.h"
 
 #ifndef TF_LITE_STRIP_ERROR_STRINGS
 #include <cstdio>
 #endif
 
-void DebugLog(const char* s) {
+extern "C" void DebugLog(const char* s) {
 #ifndef TF_LITE_STRIP_ERROR_STRINGS
   // Reusing TF_LITE_STRIP_ERROR_STRINGS to disable DebugLog completely to get
   // maximum reduction in binary size. This is because we have DebugLog calls
   // via TF_LITE_CHECK that are not stubbed out by TF_LITE_REPORT_ERROR.
-//   fprintf(stderr, "%s", s);
-//   mp_printf(&mp_plat_print, "Starting TFLite setup.");
-    uBit.serial.send(s);
+  fprintf(stderr, "%s", s);
 #endif
 }

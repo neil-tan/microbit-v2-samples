@@ -15,14 +15,17 @@ limitations under the License.
 #ifndef TENSORFLOW_LITE_MICRO_DEBUG_LOG_H_
 #define TENSORFLOW_LITE_MICRO_DEBUG_LOG_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif  // __cplusplus
+
 // This function should be implemented by each target platform, and provide a
 // way for strings to be output to some text stream. For more information, see
 // tensorflow/lite/micro/debug_log.cc.
-#if defined(__cplusplus) && EI_C_LINKAGE == 1
-extern "C" void DebugLog(const char* s);
-#else
 void DebugLog(const char* s);
-#endif // defined(__cplusplus) && EI_C_LINKAGE == 1
+
+#ifdef __cplusplus
+}  // extern "C"
+#endif  // __cplusplus
 
 #endif  // TENSORFLOW_LITE_MICRO_DEBUG_LOG_H_
-

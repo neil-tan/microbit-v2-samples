@@ -19,11 +19,16 @@ limitations under the License.
 
 namespace tflite {
 
-// Patched by Edge Impulse, remove std::fmin
-template <class T>
-inline T TfLiteMin(const T& x, const T& y) {
+#if defined(TF_LITE_USE_GLOBAL_MIN) || defined(__ZEPHYR__)
+inline float TfLiteMin(const float& x, const float& y) {
   return std::min(x, y);
 }
+#else
+template <class T>
+inline T TfLiteMin(const T& x, const T& y) {
+  return std::fmin(x, y);
+}
+#endif
 
 }  // namespace tflite
 

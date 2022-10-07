@@ -19,9 +19,12 @@ limitations under the License.
 
 #include "tensorflow/lite/core/api/error_reporter.h"
 #include "tensorflow/lite/micro/compatibility.h"
+// TODO(b/246776144): Move this include statement to the cc file.
+#include "tensorflow/lite/micro/micro_log.h"
 
 namespace tflite {
-
+// Get a pointer to a singleton global error reporter.
+ErrorReporter* GetMicroErrorReporter();
 class MicroErrorReporter : public ErrorReporter {
  public:
   ~MicroErrorReporter() override {}
