@@ -35,7 +35,7 @@
 
 extern "C" void mp_main(void);
 extern "C" void m_printf(...);
-extern const float arr_input_data[3200];
+// extern const float arr_input_data[3200];
 
 MicroBit uBit;
 
@@ -47,6 +47,7 @@ int main() {
     // calls Serial::initialiseRx, to set up interrupts.
     uBit.serial.setRxBufferSize(128);
 
+    uBit.serial.send("Init...");
     uBit.display.setBrightness(255);
 
 
@@ -64,8 +65,18 @@ int main() {
             max_index = i;
         }
     }
-        
+
+    uBit.serial.send("\n");
+    uBit.serial.send("Label:");
+    uBit.serial.send((int) arr_input_label[0]);
+    uBit.serial.send("\n");
+
+    uBit.serial.send("Predicted: ");
+    uBit.serial.send(max_index);
+    uBit.serial.send("\n");
+
     uBit.display.print(max_index);
+    uBit.serial.send("Done.");
     uBit.sleep(1000);
 
     return 0;
