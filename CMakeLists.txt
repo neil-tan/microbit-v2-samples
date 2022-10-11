@@ -248,6 +248,10 @@ list(APPEND INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/source/third_party/ruy")
 list(APPEND INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/source/third_party/flatbuffers/include")
 list(APPEND INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/source/third_party/gemmlowp/")
 
+# RECURSIVE_FIND_DIR will add to the includes path any folder with a .h file
+# In the case of flatbuffers we need to remove this directory or its string.h file with clash with stdlib <string.h>
+list(FILTER INCLUDE_DIRS EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/source/third_party/flatbuffers/include/flatbuffers")
+
 if("${SOURCE_FILES}" STREQUAL "")
     message(FATAL_ERROR "${BoldRed}No user application to build, please add a main.cpp at: ${PROJECT_SOURCE_DIR}/${CODAL_APP_SOURCE_DIR}${ColourReset}")
 endif()
