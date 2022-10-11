@@ -14,7 +14,7 @@ limitations under the License.
 ==============================================================================*/
 
 #include "tflite_predict.h"
-
+#include "main.h"
 // Globals, used for compatibility with Arduino-style sketches.
 namespace {
 tflite::ErrorReporter* error_reporter = nullptr;
@@ -27,6 +27,14 @@ int inference_count = 0;
 constexpr int kTensorArenaSize = 64000;
 uint8_t tensor_arena[kTensorArenaSize];
 }  // namespace
+
+void printShape(TfLiteTensor* tensor) {
+  uBit.serial.send("shape: ");
+  for (int i = 0; i < tensor->dims->size; ++i) {
+    uBit.serial.send(tensor->dims->data[i]);
+    uBit.serial.send(" ");
+  }
+}
 
 // The name of this function is important for Arduino compatibility.
 void setup() {
@@ -71,6 +79,8 @@ void setup() {
 // The name of this function is important for Arduino compatibility.
 float* predict(const float in[]) {
   // Place the input data in the model's input tensor
+  uBit.serial.send("input shape: ");
+  printShape(input);
   for (int i = 0; i < 3200; i++) {
     input->data.f[i] = in[i];
   }
@@ -86,7 +96,8 @@ float* predict(const float in[]) {
     TF_LITE_REPORT_ERROR(error_reporter, "Invoke failed on input: %s", s);
     return NULL;
   }
-
+  uBit.serial.send("out shape: ");
+  printShape(output);
   // Return the match probability from model's output tensor
   return output->data.f;
 }

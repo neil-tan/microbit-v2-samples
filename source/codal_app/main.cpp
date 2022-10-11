@@ -37,11 +37,42 @@ extern "C" void mp_main(void);
 extern "C" void m_printf(...);
 // extern const float arr_input_data[3200];
 
+void printFloat(float f) {
+  int int_part = (int)f;
+
+  uBit.serial.send(int_part);
+  uBit.serial.send(".");
+
+  float frac_part = f - (float) int_part;
+  if (frac_part < 0) {
+    frac_part = -frac_part;
+  }
+
+  for(int i = 0; i <= 3; i++) {
+    frac_part *= 10;
+    int digit = (int) frac_part;
+    uBit.serial.send(digit);
+    frac_part -= (float) digit;
+  }
+}
+
+int argmax(float* arr, int len) {
+    int max_idx = 0;
+    float max_val = arr[0];
+    for (int i = 1; i < len; i++) {
+        if (arr[i] > max_val) {
+            max_idx = i;
+            max_val = arr[i];
+        }
+    }
+    return max_idx;
+}
+
+
 MicroBit uBit;
 
 int main() {
     uBit.init();
-
 
     // As well as configuring a larger RX buffer, this needs to be called so it
     // calls Serial::initialiseRx, to set up interrupts.
@@ -50,21 +81,13 @@ int main() {
     uBit.serial.send("Init...");
     uBit.display.setBrightness(255);
 
-
     setup();
 
     uBit.display.print("x");
 
     float* output = predict(arr_input_data);
 
-    float max_value = -100.0;
-    int8_t max_index = -1;
-    for(int i = 0; i<8; i++){
-        if(output[i] > max_value){
-            max_value = output[i];
-            max_index = i;
-        }
-    }
+    int max_index = argmax(output, 41);
 
     uBit.serial.send("\n");
     uBit.serial.send("Label:");
@@ -74,9 +97,14 @@ int main() {
     uBit.serial.send("Predicted: ");
     uBit.serial.send(max_index);
     uBit.serial.send("\n");
+    uBit.serial.send("Output: ");
+    for (int i = 0; i < 41; i++) {
+        printFloat(output[i]);
+        uBit.serial.send(", ");
+    }
 
     uBit.display.print(max_index);
-    uBit.serial.send("Done.");
+    uBit.serial.send("\nDone.");
     uBit.sleep(1000);
 
     return 0;
