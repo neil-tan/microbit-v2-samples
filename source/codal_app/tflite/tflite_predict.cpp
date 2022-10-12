@@ -24,7 +24,7 @@ TfLiteTensor* input = nullptr;
 TfLiteTensor* output = nullptr;
 int inference_count = 0;
 
-constexpr int kTensorArenaSize = 64000;
+constexpr int kTensorArenaSize = 35000;
 uint8_t tensor_arena[kTensorArenaSize];
 }  // namespace
 
