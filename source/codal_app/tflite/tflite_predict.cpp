@@ -79,8 +79,8 @@ void setup() {
 // The name of this function is important for Arduino compatibility.
 float* predict(const float in[]) {
   // Place the input data in the model's input tensor
-  uBit.serial.send("input shape: ");
-  printShape(input);
+  // uBit.serial.send("input shape: ");
+  // printShape(input);
   for (int i = 0; i < 3200; i++) {
     input->data.f[i] = in[i];
   }
@@ -96,8 +96,8 @@ float* predict(const float in[]) {
     TF_LITE_REPORT_ERROR(error_reporter, "Invoke failed on input: %s", s);
     return NULL;
   }
-  uBit.serial.send("out shape: ");
-  printShape(output);
+  // uBit.serial.send("out shape: ");
+  // printShape(output);
   // Return the match probability from model's output tensor
   return output->data.f;
 }

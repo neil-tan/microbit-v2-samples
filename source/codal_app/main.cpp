@@ -83,29 +83,35 @@ int main() {
 
     setup();
 
-    uBit.display.print("x");
+    for (int sample_counter=0;sample_counter<num_samples;sample_counter++) {
+        const float *input_data = arr_input_data[sample_counter];
 
-    float* output = predict(arr_input_data);
+        uBit.display.print("x");
+        unsigned long elapsed_time = uBit.systemTime();
+        float* output = predict(input_data);
+        elapsed_time = uBit.systemTime() - elapsed_time;
+        uBit.display.print("O");
 
-    int max_index = argmax(output, 41);
+        int max_index = argmax(output, 41);
 
-    uBit.serial.send("\n");
-    uBit.serial.send("Label:");
-    uBit.serial.send((int) arr_input_label[0]);
-    uBit.serial.send("\n");
+        uBit.serial.send("\n");
+        uBit.serial.send("Label:");
+        uBit.serial.send((int) arr_input_label[sample_counter]);
+        uBit.serial.send("\n");
 
-    uBit.serial.send("Predicted: ");
-    uBit.serial.send(max_index);
-    uBit.serial.send("\n");
-    uBit.serial.send("Output: ");
-    for (int i = 0; i < 41; i++) {
-        printFloat(output[i]);
-        uBit.serial.send(", ");
+        uBit.serial.send("Predicted: ");
+        uBit.serial.send(max_index);
+        uBit.serial.send("\n");
+
+        uBit.serial.send("Time: ");
+        uBit.serial.send((int)elapsed_time);
+        uBit.serial.send("ms\n\n");
+
     }
 
-    uBit.display.print(max_index);
     uBit.serial.send("\nDone.");
     uBit.sleep(1000);
 
     return 0;
 }
+
